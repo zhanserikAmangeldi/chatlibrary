@@ -49,7 +49,7 @@ dependencies {
 
 afterEvaluate {
     publishing {
-        publications {
+        publications { // in the start I cannot publish to github packages, instead of packages I used jitpack :)
             create<MavenPublication>("release") {
                 from(components["release"])
 
@@ -60,6 +60,15 @@ afterEvaluate {
             }
         }
 
-
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/zhanserikAmangeldi/chatlibrary")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
     }
 }
